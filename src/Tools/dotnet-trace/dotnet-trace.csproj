@@ -2,7 +2,8 @@
   <PropertyGroup>
     <TargetFramework>$(NetCoreAppMinTargetFramework)</TargetFramework>
     <RootNamespace>Microsoft.Diagnostics.Tools.Trace</RootNamespace>
-    <ToolCommandName>dotnet-trace</ToolCommandName>
+    <AssemblyName>daniel-trace</AssemblyName>
+    <ToolCommandName>daniel-trace</ToolCommandName>
     <Description>.NET Performance Trace Tool</Description>
     <PackageTags>Diagnostic</PackageTags>
     <PackageReleaseNotes>$(Description)</PackageReleaseNotes>
