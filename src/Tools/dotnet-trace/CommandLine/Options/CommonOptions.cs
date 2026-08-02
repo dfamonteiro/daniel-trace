@@ -82,5 +82,17 @@ namespace Microsoft.Diagnostics.Tools.Trace
                 Description = $"Sets the output format for the trace file conversion.",
                 Required = true
             };
+
+        public static readonly Option<string> SpanFilterOption =
+            new("--span-filter")
+            {
+                Description = @"Remove spans from the call stack that don't match the filter. Supports unix-style wildcards."
+            };
+
+        public static readonly Option<string> FirstSpanFilterOption =
+            new("--first-span")
+            {
+                Description = @"Remove spans from the call stack starting from the root until a span that matches the filter is found. Supports unix-style wildcards."
+            };
     }
 }

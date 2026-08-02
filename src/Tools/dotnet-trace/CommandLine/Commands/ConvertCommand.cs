@@ -17,7 +17,7 @@ namespace Microsoft.Diagnostics.Tools.Trace
         // The first 8 bytes of a nettrace file are the ASCII string "Nettrace"
         private static readonly byte[] NetTraceHeader = [0x4E, 0x65, 0x74, 0x74, 0x72, 0x61, 0x63, 0x65];
 
-        public static int ConvertFile(TextWriter stdOut, TextWriter stdError, FileInfo inputFilename, TraceFileFormat format, FileInfo output)
+        public static int ConvertFile(TextWriter stdOut, TextWriter stdError, FileInfo inputFilename, TraceFileFormat format, FileInfo output, string firstSpan, string spanFilter)
         {
             if (!Enum.IsDefined(format))
             {
@@ -34,7 +34,7 @@ namespace Microsoft.Diagnostics.Tools.Trace
 
             if (format != TraceFileFormat.NetTrace)
             {
-                TraceFileFormatConverter.ConvertToFormat(stdOut, stdError, format, inputFilename.FullName, outputFilename);
+                TraceFileFormatConverter.ConvertToFormat(stdOut, stdError, format, inputFilename.FullName, outputFilename, firstSpan, spanFilter);
                 return 0;
             }
 
@@ -101,6 +101,8 @@ namespace Microsoft.Diagnostics.Tools.Trace
                 InputFileArgument,
                 CommonOptions.ConvertFormatOption,
                 OutputOption,
+                CommonOptions.FirstSpanFilterOption,
+                CommonOptions.SpanFilterOption,
             };
 
             convertCommand.SetAction((parseResult, ct) => Task.FromResult(ConvertFile(
@@ -108,8 +110,10 @@ namespace Microsoft.Diagnostics.Tools.Trace
                 stdError: parseResult.Configuration.Error,
                 inputFilename: parseResult.GetValue(InputFileArgument),
                 format: parseResult.GetValue(CommonOptions.ConvertFormatOption),
-                output: parseResult.GetValue(OutputOption
-            ))));
+                output: parseResult.GetValue(OutputOption),
+                firstSpan: parseResult.GetValue(CommonOptions.FirstSpanFilterOption),
+                spanFilter: parseResult.GetValue(CommonOptions.SpanFilterOption)
+            )));
 
             return convertCommand;
         }
